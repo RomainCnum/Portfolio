@@ -396,6 +396,8 @@
 
     .project-card:hover .project-logo { opacity: 1; }
 
+    .rempart-logo { height: 240px !important; }
+
     /* ── Expandable modules panel ─────────────────── */
     .project-card.expandable { cursor: pointer; }
 
@@ -768,6 +770,10 @@
           <div class="project-logos">
             <img src="logo/Seculabs.png" alt="Seculabs" class="project-logo">
             <img src="logo/selabs.png" alt="SE Labs" class="project-logo">
+            <img src="SOC_AI/rempart.png"
+                 data-gif="SOC_AI/rempart.gif"
+                 alt="Rempart"
+                 class="project-logo rempart-logo">
           </div>
         </div>
         <div class="pdf-panel">
@@ -1058,8 +1064,8 @@
   <!-- ── Contact ──────────────────────────────────── -->
   <section id="contact">
     <div class="contact-box reveal">
-      <h3>Let's Work Together</h3>
-      <p>Open to collaborations, consulting engagements, and speaking opportunities.</p>
+      <h3>Contact Me</h3>
+      <p>Open to collaborations</p>
       <div class="contact-links">
         <a href="https://linkedin.com/in/romain-christen-910053297" class="btn btn-ghost" target="_blank" rel="noopener">
           LinkedIn
@@ -1090,6 +1096,16 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+    // Rempart logo: PNG by default, GIF on card hover
+    document.querySelectorAll('.rempart-logo').forEach(img => {
+      const card = img.closest('.project-card');
+      if (!card) return;
+      const png = img.src;
+      const gif = img.dataset.gif;
+      card.addEventListener('mouseenter', () => { img.src = gif + '?t=' + Date.now(); });
+      card.addEventListener('mouseleave', () => { img.src = png; });
+    });
+
     // Expandable cards — GIF plays once on open, loops on hover
     document.querySelectorAll('.project-card.expandable').forEach(card => {
       const timers = new Map();
@@ -1119,7 +1135,7 @@
       card.addEventListener('click', () => {
         const opening = !card.classList.contains('open');
         card.classList.toggle('open');
-        card.querySelectorAll('img[data-gif]').forEach(img => {
+        card.querySelectorAll('img[data-gif]:not(.rempart-logo)').forEach(img => {
           opening ? playOnce(img) : revert(img);
         });
         // Lazy-load PDF iframe
